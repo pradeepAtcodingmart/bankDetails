@@ -121,16 +121,6 @@ function ResponsiveDrawer(props) {
     // handleMobileMenuClose();
   };
 
-  async function handleLogout() {
-    try {
-      const res = await Logout(props);
-      openSnackbar({ message: 'Logged out successfully', variant: 'success' });
-      afterLogout(res);
-    } catch (err) {
-      openSnackbar({ message: 'Logged out successfully', variant: 'success' });
-      afterLogout({});
-    }
-  }
   const menuId = 'primary-search-account-menu';
 
   React.useEffect(() => {
@@ -273,7 +263,6 @@ function ResponsiveDrawer(props) {
 ResponsiveDrawer.propTypes = {
   // Injected by the documentation to work in an iframe.
   // You won't need it on your project.
-  container: PropTypes.object,
 };
 
 export default withRouter(ResponsiveDrawer);

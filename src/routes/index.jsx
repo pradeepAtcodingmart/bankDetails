@@ -16,7 +16,7 @@ class Routes extends Component {
   render() {
     return (
       <Router>
-        <Switch key={location.pathname}>
+        <Switch>
           <Route path='/'>
             <Drawer />
           </Route>

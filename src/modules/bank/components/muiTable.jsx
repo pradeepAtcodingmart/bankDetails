@@ -3,7 +3,6 @@ import MaterialTable, { MTableToolbar } from 'material-table';
 import { makeStyles, fade } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import SearchIcon from '@material-ui/icons/Search';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 import {
   FormControl,
