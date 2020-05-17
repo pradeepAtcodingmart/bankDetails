@@ -1,21 +1,7 @@
 import React from 'react';
-import MaterialTable, { MTableToolbar } from 'material-table';
+import MaterialTable from 'material-table';
 import { makeStyles, fade } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import SearchIcon from '@material-ui/icons/Search';
-
-import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormHelperText,
-  InputBase,
-  InputAdornment,
-  TextField,
-  Grid,
-  Paper,
-} from '@material-ui/core';
+import { Paper } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,25 +46,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MuiTable({ data, isLoading }) {
+export default function MuiTable({
+  columns = [],
+  data = [],
+  isLoading = false,
+}) {
   const classes = useStyles();
-  const [name, setName] = React.useState('');
-  const [state, setState] = React.useState({
-    columns: [
-      { title: 'Bank', field: 'bank_name', width: 280 },
-      { title: 'IFSC', field: 'ifsc', width: 180 },
-      { title: 'Branch', field: 'branch', width: 200 },
-      { title: 'Bank ID', field: 'bank_id', width: 150 },
-      { title: 'Address', field: 'address' },
-    ],
-    data,
-  });
 
   return (
     <MaterialTable
       elevation={0}
       title='Banks'
-      columns={state.columns}
+      columns={columns}
       isLoading={isLoading}
       onSearchChange={(searchKey) => console.log(searchKey)}
       data={data}

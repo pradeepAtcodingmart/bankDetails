@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader/root';
 import Routes from './routes';
-import Drawer from './components/navigation';
+import './assets/css/common.css';
 
 class App extends Component {
   constructor(props) {

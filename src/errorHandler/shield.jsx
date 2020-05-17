@@ -9,7 +9,7 @@ export default class Shield extends Component {
 
   static getDrivedStateFromError() {
     return {
-      hasError: true
+      hasError: true,
     };
   }
   componentDidCatch(error, errorInfo) {
@@ -17,7 +17,7 @@ export default class Shield extends Component {
   }
 
   render() {
-    const { hasError, error, errorInfo } = this.state;
+    const { hasError, error } = this.state;
     const { children } = this.props;
     if (hasError) {
       return (
@@ -31,5 +31,5 @@ export default class Shield extends Component {
 }
 
 Shield.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
 };

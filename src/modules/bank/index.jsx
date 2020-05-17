@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, fade } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 import Shield from '../../errorHandler/shield';
 import API from '../../middleware/api';
@@ -9,12 +9,8 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  FormHelperText,
-  InputBase,
   InputAdornment,
   TextField,
-  Grid,
-  Input,
   Paper,
 } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
@@ -40,6 +36,10 @@ const styles = (theme) => ({
   paper: {
     padding: '24px',
   },
+  filterContianer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
 });
 
 class Index extends Component {
@@ -47,6 +47,13 @@ class Index extends Component {
     super(props);
     this.state = {
       isLoading: false,
+      columns: [
+        { title: 'Bank', field: 'bank_name', width: 280 },
+        { title: 'IFSC', field: 'ifsc', width: 180 },
+        { title: 'Branch', field: 'branch', width: 200 },
+        { title: 'Bank ID', field: 'bank_id', width: 150 },
+        { title: 'Address', field: 'address' },
+      ],
       cachebankData: {},
       bankData: {},
       selectedCity: 'MUMBAI',
@@ -132,7 +139,20 @@ class Index extends Component {
   };
 
   handleChangeSearch = (value) => {
-    this.setState({ isLoading: true, searchInput: value });
+    this.setState({ searchInput: value }, this.debounce);
+  };
+
+  debounce = (value) => {
+    if (this.bounce) {
+      clearInterval(this.bounce);
+      console.log('debounce clear', value);
+    }
+    this.bounce = setTimeout(this.searchChange, 1000);
+  };
+
+  searchChange = () => {
+    let value = this.state.searchInput;
+    console.log('searchChange', value);
     if (value) {
       let {
         selectedCategory,
@@ -149,27 +169,13 @@ class Index extends Component {
       );
       bankData[selectedCity] = [...filteredBankData];
       this.setState({ bankData, isLoading: false });
+      console.log(bankData, 'check');
     } else {
-      let {
-        selectedCategory,
-        selectedCity,
-        bankData,
-        cachebankData,
-      } = this.state;
+      let { selectedCity, bankData, cachebankData } = this.state;
       bankData[selectedCity] = [...cachebankData[selectedCity]];
       this.setState({ isLoading: false, bankData });
     }
-
-    // let bounce;
-    // if (bounce) {
-    //   clearInterval(this.bounce);
-    // }
-    // bounce = setTimeout(() => {
-    // const { name, value } = event.target;
-    // this.setState({ [name]: value });
-    // }, 1000);
   };
-
   handleSearchChange = (e) => {
     console.log(e.target.value);
   };
@@ -184,17 +190,19 @@ class Index extends Component {
       selectedCategory = '',
       isLoading,
       searchInput,
+      columns,
     } = this.state;
 
     return (
-      <React.Fragment>
+      <Shield>
         <div className={classes.body}>
           <Paper className={classes.paper} elevation={0}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={3} lg={5} md={5}>
+            <div className={classes.filterContianer}>
+              <div>
                 <Typography variant='h6'>Banks</Typography>
-              </Grid>
-              <Grid item xs={12} sm={9} lg={7} md={7}>
+              </div>
+
+              <div>
                 <FormControl className={classes.formControl}>
                   <InputLabel id='demo-simple-select-label'>
                     Select City
@@ -251,15 +259,16 @@ class Index extends Component {
                     ),
                   }}
                 />
-              </Grid>
-            </Grid>
+              </div>
+            </div>
           </Paper>
           <MuiTable
             data={bankData[selectedCity] || []}
+            columns={columns}
             isLoading={isLoading || false}
           />
         </div>
-      </React.Fragment>
+      </Shield>
     );
   }
 }
