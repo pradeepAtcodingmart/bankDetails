@@ -156,7 +156,7 @@ class Index extends Component {
 
   searchChange = () => {
     let value = this.state.searchInput;
-    if (value) {
+    if (value.trim()) {
       let {
         selectedCategory,
         selectedCity,
@@ -168,7 +168,7 @@ class Index extends Component {
         data[selectedCategory]
           .toString()
           .toUpperCase()
-          .includes(value.toUpperCase())
+          .includes(value.toUpperCase().trim())
       );
       bankData[selectedCity] = [...filteredBankData];
       this.setState({ bankData, isLoading: false });
@@ -247,7 +247,7 @@ class Index extends Component {
                 </FormControl>
                 <TextField
                   disabled={isLoading}
-                  label='searchInput'
+                  label='Search'
                   name='searchInput'
                   value={searchInput}
                   onChange={(e) => this.handleChangeSearch(e.target.value)}
