@@ -2,7 +2,7 @@
   "name": "bank",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://pradeepAtcodingmart.github.io/bankdetails",
+  "homepage": "https://pradeepAtcodingmart.github.io/bankDetails",
   "engines": {
     "node": "12.14.1",
     "npm": "6.13.6"
