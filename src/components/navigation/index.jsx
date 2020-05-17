@@ -121,11 +121,11 @@ function ResponsiveDrawer(props) {
               <React.Fragment key={data.text}>
                 <Link to={`/${data.url}`}>
                   <ListItem
-                    className={`${
+                    className={
                       activeRoute(data.url)
-                        ? classes.activeItem
+                        ? `${classes.activeItem} my-list`
                         : classes.inActiveItem
-                    } my-list`}
+                    }
                     onClick={() => setCurrent(data.url)}
                   >
                     <ListItemIcon

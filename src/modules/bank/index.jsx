@@ -22,9 +22,8 @@ import MuiTable from './components/muiTable';
 const styles = (theme) => ({
   root: {},
   body: {
-    margin: '24px 0px 8px 8px',
-    boxShadow:
-      '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)',
+    margin: '24px 0px 16px 16px',
+    boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
   },
   formControl: {
     marginLeft: theme.spacing(4),
@@ -111,18 +110,24 @@ class Index extends Component {
   };
 
   getBankData = () => {
-    const { selectedCity } = this.state;
-    API.get(`banks?city=${selectedCity}`)
-      .then((res) => {
-        const { bankData, cachebankData } = this.state;
-        bankData[selectedCity] = [...res.data];
-        cachebankData[selectedCity] = [...res.data];
-        this.setState({ bankData, cachebankData });
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => this.setState({ isLoading: false }));
+    const { selectedCity, cachebankData } = this.state;
+    if (!cachebankData[selectedCity]) {
+      API.get(`banks?city=${selectedCity}`)
+        .then((res) => {
+          const { bankData } = this.state;
+          bankData[selectedCity] = [...res.data];
+          cachebankData[selectedCity] = [...res.data];
+          this.setState({ bankData, cachebankData });
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => this.setState({ isLoading: false }));
+    } else {
+      let { bankData } = this.state;
+      bankData[selectedCity] = [...(cachebankData[selectedCity] || [])];
+      this.setState({ bankData, isLoading: false });
+    }
   };
 
   handleChange = ({ target: { name, value } }) => {
@@ -145,14 +150,12 @@ class Index extends Component {
   debounce = (value) => {
     if (this.bounce) {
       clearInterval(this.bounce);
-      console.log('debounce clear', value);
     }
-    this.bounce = setTimeout(this.searchChange, 1000);
+    this.bounce = setTimeout(this.searchChange, 500);
   };
 
   searchChange = () => {
     let value = this.state.searchInput;
-    console.log('searchChange', value);
     if (value) {
       let {
         selectedCategory,
@@ -169,7 +172,6 @@ class Index extends Component {
       );
       bankData[selectedCity] = [...filteredBankData];
       this.setState({ bankData, isLoading: false });
-      console.log(bankData, 'check');
     } else {
       let { selectedCity, bankData, cachebankData } = this.state;
       bankData[selectedCity] = [...cachebankData[selectedCity]];
@@ -203,7 +205,10 @@ class Index extends Component {
               </div>
 
               <div>
-                <FormControl className={classes.formControl}>
+                <FormControl
+                  className={classes.formControl}
+                  disabled={isLoading}
+                >
                   <InputLabel id='demo-simple-select-label'>
                     Select City
                   </InputLabel>
@@ -219,7 +224,10 @@ class Index extends Component {
                     ))}
                   </Select>
                 </FormControl>
-                <FormControl className={classes.formControl}>
+                <FormControl
+                  className={classes.formControl}
+                  disabled={isLoading}
+                >
                   <InputLabel id='demo-simple-select-label'>
                     Select Category
                   </InputLabel>
@@ -238,6 +246,7 @@ class Index extends Component {
                   </Select>
                 </FormControl>
                 <TextField
+                  disabled={isLoading}
                   label='searchInput'
                   name='searchInput'
                   value={searchInput}
