@@ -111,6 +111,7 @@ class Index extends Component {
 
   getBankData = () => {
     const { selectedCity, cachebankData } = this.state;
+
     if (!cachebankData[selectedCity]) {
       API.get(`banks?city=${selectedCity}`)
         .then((res) => {
@@ -132,15 +133,6 @@ class Index extends Component {
 
   handleChange = ({ target: { name, value } }) => {
     this.setState({ [name]: value, isLoading: true }, this.getBankData);
-  };
-
-  debounce = (func, wait) => {
-    let timeout;
-    return function (...args) {
-      const context = this;
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(context, args), wait);
-    };
   };
 
   handleChangeSearch = (value) => {
@@ -178,6 +170,7 @@ class Index extends Component {
       this.setState({ isLoading: false, bankData });
     }
   };
+
   handleSearchChange = (e) => {
     console.log(e.target.value);
   };
