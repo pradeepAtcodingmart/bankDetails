@@ -33,6 +33,7 @@ const drawerWidth = 200;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    height: '100%',
   },
   drawer: {
     [theme.breakpoints.up('sm')]: {
@@ -49,9 +50,8 @@ const useStyles = makeStyles((theme) => ({
   },
   menuButton: {
     display: 'flex',
-    float: 'right',
     position: 'absolute',
-    right: '20px',
+    color: 'white',
   },
   toolbar: theme.mixins.toolbar,
   toolBarContent: {
@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
-    height: '100vh',
+    height: '100%',
   },
   activeItem: {
     color: '#C0C0C0',
@@ -215,7 +215,17 @@ function ResponsiveDrawer(props) {
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position='fixed' className={classes.appBar} color='default'>
-        <Toolbar />
+        <Toolbar>
+          <IconButton
+            color='inherit'
+            aria-label='open drawer'
+            edge='start'
+            onClick={handleDrawerToggle}
+            className={classes.menuButton}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Toolbar>
       </AppBar>
       <Router>
         <nav className={classes.drawer} aria-label='Mailbox folders'>

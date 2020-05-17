@@ -32,7 +32,7 @@ const styles = (theme) => ({
   },
   formControl: {
     marginLeft: theme.spacing(4),
-    minWidth: 170,
+    minWidth: 220,
   },
   icon: {
     cursor: 'pointer',
@@ -124,7 +124,7 @@ class Index extends Component {
 
   debounce = (func, wait) => {
     let timeout;
-    return function(...args) {
+    return function (...args) {
       const context = this;
       clearTimeout(timeout);
       timeout = setTimeout(() => func.apply(context, args), wait);
